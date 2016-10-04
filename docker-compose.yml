@@ -9,12 +9,12 @@
 #  command: /opt/vc/bin/vcgencmd measure_temp
 
 redis:
-  build: redis-rpi
+  build: docker-redis-rpi
   volumes:
     - ./redis.conf:/etc/redis.conf
 
 check_temperature:
-  build: python3-rpi
+  build: docker-python3-rpi
   devices:
     - "/dev/vchiq"
   environment:
@@ -27,7 +27,7 @@ check_temperature:
   command: python3 /etc/temperature_update.py
 
 serve_temperature:
-  build: nodejs-rpi
+  build: docker-nodejs-rpi
   volumes:
     - ./cpu_temperature_node_app:/etc/server
   command: bash -c "cd server && npm install && npm start"
