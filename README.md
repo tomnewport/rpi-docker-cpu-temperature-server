@@ -1,5 +1,22 @@
 # Raspberry Pi Temperature Server using Docker Compose
 
+This project uses `docker-compose` to run a multi-container application which checks the 
+Raspberry Pi's CPU temperature and provides the result through a very simple AJAX web
+application. It is intentionally more complicated than necessary to show how 
+`docker-compose` can be used to deploy applications on the Raspberry Pi.
+
+The application consists of three containers. The current temperature is read from one
+container using Python and then stored in another container using Redis. The value is 
+then read from Redis and server over HTTP using NodeJS/Express.
+
+Running docker-compose up will:
+
+1. (If needed) download a Raspbian base docker image.
+1. (If needed) download Redis and compile from source inside the redis-rpi image.
+1. (If needed) install NodeJS and Python inside the nodejs-rpi and python3-rpi images respectively.
+1. Start containers for each image and network them together.
+1. Make the NodeJS application available on port 80 (default web port) of the raspberry pi. 
+
 ## Initial Setup
 
 Before running this project you will need to install docker and docker-compose on your pi. 
