@@ -1,0 +1,15 @@
+<h1>Raspberry Pi is currently running at <span id="temperature"></span>°C</h1>
+<script>
+function updateTemperature(){
+function reqListener () {
+  document.getElementById("temperature").innerHTML = this.responseText;
+}
+
+var oReq = new XMLHttpRequest();
+oReq.addEventListener("load", reqListener);
+oReq.open("GET", "/temperature");
+oReq.send();
+}
+updateTemperature()
+setInterval(updateTemperature, 5000)
+</script>

@@ -1,0 +1,37 @@
+#tempserver:
+#  image: sdhibit/rpi-raspbian:latest 
+#  devices:
+#    - "/dev/vchiq"
+#  environment:
+#    - LD_LIBRARY_PATH=/opt/vc/lib
+#  volumes:
+#    - /opt/vc:/opt/vc:ro 
+#  command: /opt/vc/bin/vcgencmd measure_temp
+
+redis:
+  build: redis-rpi
+  volumes:
+    - ./redis.conf:/etc/redis.conf
+
+check_temperature:
+  build: python3-rpi
+  devices:
+    - "/dev/vchiq"
+  environment:
+    - LD_LIBRARY_PATH=/opt/vc/lib
+  volumes:
+    - /opt/vc:/opt/vc:ro
+    - ./temperature_update.py:/etc/temperature_update.py:ro
+  links:
+    - redis 
+  command: python3 /etc/temperature_update.py
+
+serve_temperature:
+  build: nodejs-rpi
+  volumes:
+    - ./rpi_temperature_node:/etc/server
+  command: bash -c "cd server && npm install && npm start"
+  ports:
+    - 80:3000
+  links:
+    - redis
