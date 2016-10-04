@@ -29,7 +29,7 @@ check_temperature:
 serve_temperature:
   build: nodejs-rpi
   volumes:
-    - ./rpi_temperature_node:/etc/server
+    - ./cpu_temperature_node_app:/etc/server
   command: bash -c "cd server && npm install && npm start"
   ports:
     - 80:3000
